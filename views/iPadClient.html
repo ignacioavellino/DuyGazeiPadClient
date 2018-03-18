@@ -1,0 +1,385 @@
+<html>
+<head>
+  <title>Answers</title>
+</head>
+
+<body>
+  <div id="div-main">
+    <div id="div-done" class="div-main-inner div-hidden">
+      <button id="button-done" class="flat-button">STOP</button>
+    </div>
+    <div id="div-targets" class="div-main-inner ">
+
+      <img src="img/Layout_3x3.png" class="img-centered img-layout" id="" style=""/>
+
+      <img src="img/1.png" class="img-target" id="1"
+        style="margin-left: 587px; margin-top: 502px"/>
+
+      <img src="img/2.png" class="img-target" id="2"
+        style="margin-left: 475px; margin-top: 502px"/>
+
+      <img src="img/3.png" class="img-target" id="3"
+        style="margin-left: 362px; margin-top: 502px"/>
+
+      <img src="img/4.png" class="img-target" id="4"
+        style="margin-left: 587px; margin-top: 341px"/>
+
+      <img src="img/5.png" class="img-target" id="5"
+        style="margin-left: 475px; margin-top: 341px"/>
+
+      <img src="img/6.png" class="img-target" id="6"
+        style="margin-left: 362px; margin-top: 341px"/>
+
+      <img src="img/7.png" class="img-target" id="7"
+        style="margin-left: 587px; margin-top: 185px"/>
+
+      <img src="img/8.png" class="img-target" id="8"
+        style="margin-left: 475px; margin-top: 185px"/>
+
+      <img src="img/9.png" class="img-target" id="9"
+        style="margin-left: 362px; margin-top: 185px"/>
+
+      <img src="img/A.png" class="img-target" id="A"
+        style="margin-left: 705px; margin-top: 341px"/>
+
+      <img src="img/B.png" class="img-target" id="B"
+        style="margin-left: 475px; margin-top: 628px"/>
+
+      <img src="img/C.png" class="img-target" id="C"
+        style="margin-left: 245px; margin-top: 340px"/>
+
+        <!--img src="media/target_C.png" class="img-target" id="target_C"
+          style="margin-left: 445px; margin-top: 130px"/>
+        
+        <img src="media/target_D.png" class="img-target" id="target_D"
+          style="margin-left: 537px; margin-top: 168px"/>
+
+        <img src="media/target_E.png" class="img-target" id="target_E"
+          style="margin-left: 575px; margin-top: 260px"/>
+
+        <img src="media/target_F.png" class="img-target" id="target_F"
+          style="margin-left: 537px; margin-top: 352px"/>
+
+        <img src="media/target_H.png" class="img-target" id="target_H"
+          style="margin-left: 445px; margin-top: 390px"/>
+
+        <img src="media/target_J.png" class="img-target" id="target_J"
+          style="margin-left: 353px; margin-top: 352px"/>
+
+        <img src="media/target_K.png" class="img-target" id="target_K"
+          style="margin-left: 315px; margin-top: 260px"/>
+
+        <img src="media/target_L.png" class="img-target" id="target_L"
+          style="margin-left: 353px; margin-top: 168px"/>
+
+        <img src="media/target_M.png" class="img-target" id="target_M"
+          style="margin-left: 445px; margin-top: 0px"/>
+
+        <img src="media/target_N.png" class="img-target" id="target_N"
+          style="margin-left: 629px; margin-top: 76px"/>
+
+        <img src="media/target_P.png" class="img-target" id="target_P"
+          style="margin-left: 705px; margin-top: 260px"/>
+
+        <img src="media/target_R.png" class="img-target" id="target_R"
+          style="margin-left: 629px; margin-top: 444px"/>
+
+        <img src="media/target_S.png" class="img-target" id="target_S"
+          style="margin-left: 445px; margin-top: 520px"/>
+
+        <img src="media/target_T.png" class="img-target" id="target_T"
+          style="margin-left: 261px; margin-top: 444px"/>
+
+        <img src="media/target_U.png" class="img-target" id="target_U"
+          style="margin-left: 185px; margin-top: 260px"/>
+
+        <img src="media/target_V.png" class="img-target" id="target_V"
+          style="margin-left: 261px; margin-top: 76px"/>
+
+        <img src="media/target_X.png" class="img-target" id="target_X"
+          style="margin-left: 835px; margin-top: 260px"/>
+
+        <img src="media/target_Z.png" class="img-target" id="target_Z"
+          style="margin-left: 55px; margin-top: 260px"/-->
+    </div>
+    <div id="div-confidence" class="div-main-inner div-hidden">
+      <span id="span-not-confident-1" class="span-text-confidence">Not</span>
+      <span id="span-not-confident-2" class="span-text-confidence">confident</span>
+      <span id="span-very-confident-1" class="span-text-confidence">Very</span>
+      <span id="span-very-confident-2" class="span-text-confidence">confident</span>
+      <button id="conf_0" class="flat-button button-confidence">0</button>
+      <button id="conf_1" class="flat-button button-confidence">1</button>
+      <button id="conf_2" class="flat-button button-confidence">2</button>
+      <button id="conf_3" class="flat-button button-confidence">3</button>
+      <button id="conf_4" class="flat-button button-confidence">4</button>
+    </div>
+  </div>
+</body>
+
+</html>
+
+
+
+<script>
+  var ws;
+  //var wsServer = "ws://" + window.location.hostname + "/ws";
+  var wsServerAddress = "localhost";
+  var wsServerPort = "8080";
+  var wsServer = "ws://" + wsServerAddress + ":" + wsServerPort;
+
+  // Page loaded event
+  document.addEventListener("DOMContentLoaded", function(event) {
+    // Connect to web socket
+    connectWebSocket();
+
+    var buttonDone = document.getElementById("button-done");
+    var divDone = document.getElementById("div-done");
+    var divTargets = document.getElementById("div-targets");
+
+    buttonDone.onclick = function(e) {
+      divDone.classList.add("div-hidden");
+      divTargets.classList.remove("div-hidden");
+      // Send stop message
+      sendEvent("stop", "");
+    };
+
+    divTargets.addEventListener("click", function(e) {
+      var target = e.target.closest(".img-target");
+      if (target) {
+        sendEvent("target-click", target.id)
+      }
+    });
+
+  });
+
+  function connectWebSocket() {
+// Connect to websocket server
+    ws = new WebSocket(wsServer);
+
+    // Log messages from the server
+    ws.onmessage = function (e) {
+        console.log("Recived message: " + e.data);
+    };
+
+    // Log errors
+    ws.onerror = function (error) {
+        console.error("WebSocket Error " + error);
+    };
+
+    ws.onopen = function (event) {
+        console.log("Connected to ws server");
+    };
+  }
+
+  function sendEvent(eventName, eventData) {
+
+    // Check state before sending
+    if (ws.readyState == ws.OPEN) {
+      var dataToSend = JSON.stringify(
+        {
+            event: eventName,
+            data: eventData,
+            timestamp: new Date().getTime()
+        });
+
+      console.log("Sending data: " + dataToSend)
+      ws.send(dataToSend, function (err) {
+      console.log("a");
+        if (err) {
+            console.log("Error sending");
+        } else {
+            console.log("Success sending");
+        }
+        
+    })
+
+  }
+}
+
+/*
+  $(function() {
+    $.divStop = $("#div-done");
+    $.divTargets = $("#div-targets");
+    $.divConfidence = $("#div-confidence");
+
+    $( "#button-done" ).on( "click", function() {
+      $.divStop.hide();
+      $.divTargets.show();
+
+      response = {};
+      response.stop = true;
+      notifyServer(response);
+    });
+
+    $( ".img-target" ).on( "click", function() {
+      $.divTargets.hide();
+      $.divConfidence.show();
+      targetNumber = this.id;
+
+      response = {};
+      response.target = targetNumber.substring(targetNumber.indexOf('_') + 1, targetNumber.length);
+      
+      // Notify server
+      notifyServer(response);
+    });
+
+    $( ".button-confidence" ).on( "click", function() {
+      $.divConfidence.hide();
+      $.divStop.show();
+
+      confidence = this.id;
+
+      response = {};
+      response.confidence = confidence.substring(confidence.indexOf('_') + 1, confidence.length);
+      
+      // Notify server
+      notifyServer(response);
+    });
+
+  });
+
+  function notifyServer(messageObject) {
+    $.ajax({
+      //url:"http://localhost:3003",
+      url:"http://169.254.196.56:3003",
+      data: JSON.stringify(messageObject),
+      //async: true,
+      success:function(result) {
+        //alert("success");
+      }
+
+    });
+  }
+  */
+
+</script>
+
+<style>
+body {
+  margin: 0px;
+  padding: 0px;
+  background-color: #EEEEEE;
+}
+#div-main {
+  width: 1024px;
+  height: 768px;
+  margin: auto;
+
+  /*background-color: #EEEEEE;*/
+}
+#div-main-inner {
+  width: 100%;
+  height: 100%;
+}
+#div-done {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+#div-targets {
+  width: 100%;
+  height: 100%;
+  display: grid;
+
+}
+#div-confidence {
+
+}
+.div-hidden {
+  display: none;
+}
+/* Inside div-stop */
+.flat-button {
+  padding: 0px;
+  position: absolute;
+  color: white;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  //background: #bdc3c7;
+  border: 1px solid #000000;
+  cursor: pointer;
+  -webkit-box-shadow: inset 0 -2px #acb2b7;
+  box-shadow: inset 0 -2px #acb2b7;
+  font-family: "Helvetica Neue";
+}
+#button-done {
+  width: 500px;
+  height: 500px;
+
+  /*Center horizontally and vertically*/
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  font-size: 150px;
+  background: #339966;
+}
+/* Inside div-targets */
+
+.img-centered{
+  margin: auto;
+}
+
+.img-layout {
+  width:700px;
+}
+
+.img-target {
+  position: absolute;
+  height: 68px;
+  /*width : 90px;*/
+  cursor: pointer;
+
+  /*background-color: black;*/
+}
+
+
+
+/* Inside div-confidence */
+.button-confidence {
+  width: 196px;
+  height: 200px;
+  margin-top: 230px;
+  font-size: 100px;
+}
+.span-text-confidence {
+  position: absolute;
+  color: rgba(100, 100, 100, 1);
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  font-size: 45px;
+  font-family: "Helvetica Neue";
+}
+#span-not-confident-1 {
+  margin-left: 55px;
+  margin-top: 120px;
+}
+#span-not-confident-2 {
+  margin-left: 5px;
+  margin-top: 180px;
+}
+#span-very-confident-1 {
+  margin-left: 840px;
+  margin-top: 120px;
+}
+#span-very-confident-2 {
+  margin-left: 790px;
+  margin-top: 180px;
+}
+#conf_0 {
+  margin-left: 0px;
+}
+#conf_1 {
+  margin-left: 196px;
+}
+#conf_2 {
+  margin-left: 392px;
+}
+#conf_3 {
+  margin-left: 588px;
+}
+#conf_4 {
+  margin-left: 784px;
+}
+</style>
