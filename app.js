@@ -26,7 +26,7 @@ const wss = new WebSocketServer({
     autoAcceptConnections: true
 });
 
-CLIENTS=[];
+//CLIENTS=[];
 clientIds = 0;
 
 /*----------- WS Server -----------*/
@@ -39,19 +39,16 @@ wss.on('connection', function connection(ws, req) {
 	ws.id = clientIds;
 	clientIds++;
 
-	CLIENTS.push(ws);
+//	CLIENTS.push(ws);
 	console.log("Someone connected, assigning id: " + ws.id);
 
 	ws.on('message', function incoming(message) {
 		console.log('Received message from ' + ws.id + ': ' + message);
-
 	    //var msg = JSON.parse(message);
-
-	    console.log(wss.clients.size);
 		// Broadcast message to everyone
         wss.clients.forEach(function each(client) {
           if (client !== ws && client.readyState === WebSocket.OPEN) {
-            console.log("Broadcasting recxeived message");
+            console.log("Broadcasting received message");
             client.send(message);
           }
         });
