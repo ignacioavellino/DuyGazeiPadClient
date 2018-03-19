@@ -69,9 +69,10 @@
 <script>
   var ws;
   //var wsServer = "ws://" + window.location.hostname + "/ws";
-  var wsServerAddress = "localhost";
-  var wsServerPort = "8080";
-  var wsServer = "ws://" + wsServerAddress + ":" + wsServerPort;
+  var wsHost = window.location.host;
+  //var wsServerPort = "4030";
+  var wsServer = "ws://" + wsHost;// wsServerAddress + ":" + wsServerPort;
+  console.log(wsServer);
 
   // Page loaded event
   document.addEventListener("DOMContentLoaded", function(event) {
@@ -127,7 +128,7 @@
 
     // Log messages from the server
     ws.onmessage = function (e) {
-        console.log("Recived message: " + e.data);
+        console.log("Received message: " + e.data);
     };
 
     // Log errors
