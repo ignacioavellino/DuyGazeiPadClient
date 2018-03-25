@@ -1,0 +1,303 @@
+<html>
+<head>
+  <title>Answers</title>
+</head>
+
+<body>
+  <div id="div-main">
+    <div id="div-done" class="div-main-inner">
+      <button id="button-done" class="flat-button">STOP</button>
+    </div>
+    <div id="div-targets" class="div-main-inner div-hidden">
+
+      <img src="img/Table_Screen_2.png" class="img-centered img-layout" id="" style=""/>
+
+      <img src="img/1.png" class="img-target" data="1"
+        style="margin-left: 626px; margin-top: 605px"/>
+
+      <img src="img/2.png" class="img-target" data="2"
+        style="margin-left: 426px; margin-top: 605px"/>
+      
+      <img src="img/3.png" class="img-target" data="3"
+        style="margin-left: 222px; margin-top: 605px"/>
+
+      <img src="img/4.png" class="img-target" data="4"
+        style="margin-left: 626px; margin-top: 375px"/>
+
+      <img src="img/5.png" class="img-target" data="5"
+        style="margin-left: 426px; margin-top: 375px"/>
+      
+      <img src="img/6.png" class="img-target" data="6"
+        style="margin-left: 222px; margin-top: 375px"/>
+      
+      <img src="img/7.png" class="img-target" data="7"
+        style="margin-left: 626px; margin-top: 150px"/>
+
+      <img src="img/8.png" class="img-target" data="8"
+        style="margin-left: 426px; margin-top: 150px"/>
+      
+      <img src="img/9.png" class="img-target" data="9"
+        style="margin-left: 222px; margin-top: 150px"/>
+      
+      <img src="img/A.png" class="img-target" data="A"
+        style="margin-left: 830px; margin-top: 200px"/>
+
+      <img src="img/B.png" class="img-target" data="B"
+        style="margin-left: 830px; margin-top: 580px"/>
+      
+      <img src="img/Me.png" class="img-target" data="C"
+        style="margin-left: 426px; margin-top: 830px"/>
+
+      <img src="img/D.png" class="img-target" data="D"
+        style="margin-left: 15px; margin-top: 580px"/>
+
+      <img src="img/E.png" class="img-target" data="E"
+        style="margin-left: 15px; margin-top: 200px"/>
+    </div>
+
+    <div id="div-confidence" class="div-main-inner div-hidden">
+      <span id="span-not-confident" class="span-text-confidence">Not<br>confident</span>
+      <span id="span-very-confident" class="span-text-confidence">Very<br>confident</span>
+      <button id="conf_1" data="1" class="flat-button button-confidence">1</button>
+      <button id="conf_2" data="2" class="flat-button button-confidence">2</button>
+      <button id="conf_3" data="3" class="flat-button button-confidence">3</button>
+      <button id="conf_4" data="4" class="flat-button button-confidence">4</button>
+      <button id="conf_5" data="5" class="flat-button button-confidence">5</button>
+    </div>
+  </div>
+</body>
+</html>
+
+
+
+<script>
+  var ws;
+  //var wsServer = "ws://" + window.location.hostname + "/ws";
+  var wsHost = window.location.host;
+  //var wsServerPort = "4030";
+  var wsServer = "ws://" + wsHost;// wsServerAddress + ":" + wsServerPort;
+  console.log(wsServer);
+
+  // Page loaded event
+  document.addEventListener("DOMContentLoaded", function(event) {
+    // Connect to web socket
+    connectWebSocket();
+
+    var buttonDone = document.getElementById("button-done");
+    var divDone = document.getElementById("div-done");
+    var divTargets = document.getElementById("div-targets");
+    var divConfidence = document.getElementById("div-confidence");
+    
+
+    buttonDone.onclick = function(e) {
+      // Send stop message
+      sendEvent("stop", "");
+
+      // Change visible div
+      divDone.classList.add("div-hidden");
+      divTargets.classList.remove("div-hidden");
+    };
+
+    divTargets.addEventListener("click", function(e) {
+      var target = e.target.closest(".img-target");
+      if (target) {
+        // Send answer to server
+        sendEvent("target-click", target.attributes.data.nodeValue)
+
+        // Change visible div
+        divTargets.classList.add("div-hidden");
+        divConfidence.classList.remove("div-hidden");
+      }
+    });
+
+    divConfidence.addEventListener("click", function(e) {
+      var target = e.target.closest(".button-confidence");
+      if (target) {
+        // Send answer to server
+        sendEvent("confidence-click", target.attributes.data.nodeValue)
+
+        // Change visible div
+        divConfidence.classList.add("div-hidden");
+        divDone.classList.remove("div-hidden");
+      }
+    });
+
+
+
+  });
+
+  function connectWebSocket() {
+    // Connect to websocket server
+    ws = new WebSocket(wsServer);
+
+    // Log messages from the server
+    ws.onmessage = function (e) {
+        console.log("Received message: " + e.data);
+    };
+
+    // Log errors
+    ws.onerror = function (error) {
+        console.error("WebSocket Error " + error);
+    };
+
+    ws.onopen = function (event) {
+        console.log("Connected to ws server");
+    };
+  }
+
+  function sendEvent(eventName, eventData) {
+
+    // Check state before sending
+    if (ws.readyState == ws.OPEN) {
+      var dataToSend = JSON.stringify(
+        {
+            event: eventName,
+            data: eventData,
+            timestamp: new Date().getTime()
+        });
+
+      console.log("Sending data: " + dataToSend)
+      ws.send(dataToSend, function (err) {
+      console.log("a");
+        if (err) {
+            console.log("Error sending");
+        } else {
+            console.log("Success sending");
+        }
+        
+    })
+
+  }
+}
+
+</script>
+
+<style>
+body {
+  margin: 0px;
+  padding: 0px;
+  background-color: #EEEEEE;
+}
+
+#div-main {
+  width: 1024px;
+  height: 768px;
+  margin: auto;
+}
+
+#div-main-inner {
+  width: 100%;
+  height: 100%;
+}
+
+#div-done {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+#div-targets {
+  width: 100%;
+  height: 100%;
+  display: grid;
+}
+
+#div-confidence {
+
+}
+
+.div-hidden {
+  display: none !important;
+}
+/* Inside div-stop */
+
+.flat-button {
+  padding: 0px;
+  position: absolute;
+  color: white;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  border: 1px solid #000000;
+  cursor: pointer;
+  -webkit-box-shadow: inset 0 -2px #acb2b7;
+  box-shadow: inset 0 -2px #acb2b7;
+  font-family: "Avenir Next";
+}
+
+#button-done {
+  width: 500px;
+  height: 500px;
+
+  /*Center horizontally and vertically*/
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  font-size: 150px;
+  background: #339966;
+}
+
+/* Inside div-targets */
+.img-centered{
+  margin: auto;
+}
+
+.img-layout {
+  width:640px;
+}
+
+.img-target {
+  position: absolute;
+  height: 180px;
+  cursor: pointer;
+}
+
+/* Inside div-confidence */
+.button-confidence {
+  width: 204px;
+  height: 200px;
+  margin-top: 230px;
+  font-size: 100px;
+  position: absolute;
+  bottom: 0px;
+}
+
+.span-text-confidence {
+  position: absolute;
+  color: rgba(100, 100, 100, 1);
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  font-size: 45px;
+  font-family: "Avenir Next";
+  bottom: 200px;
+}
+
+#span-not-confident {
+  margin-left: 2px;
+}
+
+#span-very-confident {
+  margin-left: 820px;
+}
+
+#conf_1 {
+  margin-left: 0px;
+}
+
+#conf_2 {
+  margin-left: 204px;
+}
+
+#conf_3 {
+  margin-left: 408px;
+}
+
+#conf_4 {
+  margin-left: 612px;
+}
+
+#conf_5 {
+  margin-left: 816px;
+}
+</style>
